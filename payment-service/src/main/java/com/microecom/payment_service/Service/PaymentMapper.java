@@ -1,8 +1,11 @@
 package com.microecom.payment_service.Service;
 
+import org.springframework.stereotype.Service;
+
 import com.microecom.payment_service.Model.Payment;
 import com.microecom.payment_service.Model.PaymentRequest;
 
+@Service
 public class PaymentMapper {
 
     public Payment toPayment(PaymentRequest paymentRequest) {
