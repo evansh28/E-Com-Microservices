@@ -8,8 +8,6 @@ import com.microecom.product_service.Model.ProductPurchaseResponce;
 import com.microecom.product_service.Model.ProductRequest;
 import com.microecom.product_service.Model.ProductResponse;
 
-import jakarta.validation.constraints.NotNull;
-
 @Service
 public class ProductMapper {
 
