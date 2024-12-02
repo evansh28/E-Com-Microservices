@@ -1,4 +1,4 @@
-package com.microecom.order_service.Model;
+package com.microecom.payment_service.Model;
 
 public enum PaymentMethod {
 

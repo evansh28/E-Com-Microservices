@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.microecom.order_service.Client.CustomerClient;
+import com.microecom.order_service.Client.PaymentClient;
 import com.microecom.order_service.Client.ProductClient;
 import com.microecom.order_service.Kafka.OrderProducer;
 import com.microecom.order_service.Model.OrderConfirmation;
 import com.microecom.order_service.Model.OrderLineRequesr;
 import com.microecom.order_service.Model.OrderRequest;
 import com.microecom.order_service.Model.OrderResponse;
+import com.microecom.order_service.Model.PaymentRequest;
 import com.microecom.order_service.Model.PurchaseRequest;
 import com.microecom.order_service.Repository.OrderRepository;
 
@@ -36,6 +38,9 @@ public class OrderService {
     @Autowired
     private OrderProducer orderProducer;
 
+    @Autowired
+    private PaymentClient paymentClient;
+
     public Integer placeOrder(OrderRequest request) {
 
         var customer = customerClient.fingCustomerById(request.customerId())
@@ -49,6 +54,10 @@ public class OrderService {
             orderLineService.saveorderLine(
                     new OrderLineRequesr(null, order.getId(), purReq.id(), purReq.quantity()));
         }
+
+        var paymentRequest = new PaymentRequest(request.amount(), request.paymentMethod(), order.getId(), order.getRefrence(), customer);
+
+        paymentClient.orderPaymentrequest(paymentRequest);
 
         orderProducer.sendConfirmation(
                 new OrderConfirmation(request.refrence(),
